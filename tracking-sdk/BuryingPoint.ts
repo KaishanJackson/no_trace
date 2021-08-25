@@ -1,5 +1,3 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 //埋点构造函数
 type requestMap = {
     event?: string,
@@ -18,10 +16,10 @@ type requestMap = {
 }
 class BuryingPoint {
     browser: any
-    eventUserinfo: {}
+    eventUserinfo: {[allName:string]:any}
     eventFunctions: any[]
     surePushList: []
-    pushList: []
+    pushList: Array<any>
     constructor() {
         this.browser = getBrowser(window);
         this.eventUserinfo = {};
@@ -312,9 +310,9 @@ class BuryingPoint {
     setEveryEvent():void {
         var _this = this;
         var args = [...arguments]
-        args.forEach(function (e) {
-            if ((typeof e === 'undefined' ? 'undefined' : _typeof(e)) == 'object') {
-                _this.eventUserinfo = JSON.stringify(e);
+        args.forEach(function (e:any) {
+            if (typeof e  == 'object' && !Array.isArray(e)) {
+                _this.eventUserinfo = JSON.parse(JSON.stringify(e));
             } else if (Array.isArray(e)) {
                 _this.eventFunctions = e;
             } else if (typeof e == 'function') {
